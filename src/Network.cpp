@@ -6,10 +6,10 @@ using namespace web::http;
 using namespace web::http::client;
 using namespace concurrency::streams;
 
-Network::Network(const std::string& server_uri, std::string githubToken, std::string apiToken) :
+Network::Network(const std::string &server_uri, std::string &githubToken, std::string &apiToken) :
     client(server_uri),
-    github_token(std::move(githubToken)),
-    api_token(std::move(apiToken)) {}
+    github_token(githubToken),
+    api_token(apiToken) {}
 
 // Logging in/out
 void Network::authenticate_session() {
@@ -34,7 +34,6 @@ void Network::authenticate_session() {
 json::value Network::get_current_user_data(){
     http_request request(methods::GET);
     request.set_request_uri("/api/user");
-    request.headers().add("Authorization", api_token);
     http_response response = authenticated_request(request);
 
     auto status_code = response.status_code();
@@ -48,7 +47,18 @@ json::value Network::get_current_user_data(){
 //creating tomatoes
 //json::value Network::get_tomato_list(){}
 //json::value Network::get_tomato_info(){}
-//json::value Network::create_tomato(){}
+json::value Network::create_tomato(const std::string& tags){
+    json::value postData;
+    json::value tomato = json::value::object();
+    tomato["tag_list"] = json::value::string(tags);
+    postData["tomato"] = tomato;
+
+    http_request request(methods::POST);
+    request.set_request_uri("/api/tomatoes");
+    request.set_body(postData);
+    http_response response = authenticated_request(request);
+    return response.extract_json().get();
+}
 //json::value Network::update_tomato(){}
 
 //json::value Network::delete_tomato(){}
@@ -70,11 +80,14 @@ http_response Network::authenticated_request(http_request& req) {
         authenticate_session();
         auth_attempted = true;
     }
+    req.headers().add("Authorization", api_token);
     pplx::task<http_response> response = client.request(req);
 
     if (response.get().status_code() == status_codes::Unauthorized && !auth_attempted){
         std::cout << "Unauthorized! Requesting new API key." << std::endl;
         authenticate_session();
+        req.headers().remove("Authorization");
+        req.headers().add("Authorization", api_token);
         response = client.request(req);
     }
     std::cout << "Final response was: " << response.get().status_code() << std::endl << "JSON: "

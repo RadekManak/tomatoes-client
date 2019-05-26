@@ -10,7 +10,7 @@ private:
     std::string github_token;
     std::string api_token;
 public:
-    Network(const std::string& server_uri, std::string githubToken, std::string apiToken);
+    Network(const std::string &server_uri, std::string &githubToken, std::string &apiToken);
 
     // Logging in/out
     void authenticate_session();
@@ -23,7 +23,7 @@ public:
     //creating tomatoes
 //    web::json::value get_tomato_list();
 //    web::json::value get_tomato_info();
-//    web::json::value create_tomato();
+    web::json::value create_tomato(const std::string& tags);
 //    web::json::value update_tomato();
 //    web::json::value delete_tomato();
 

@@ -22,6 +22,11 @@ std::string Session::get_user_info(){
     return response.serialize();
 }
 
+std::string Session::create_tomato(const std::string& tags){
+    auto response = network->create_tomato(tags);
+    return response.serialize();
+}
+
 bool Session::load_user_from_file() {
     std::fstream users_file;
     users_file.open(xdg::config_home() + "/tomatoesqt/users.json", std::ios::in);

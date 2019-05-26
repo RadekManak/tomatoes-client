@@ -14,4 +14,6 @@ public:
     bool load_user_from_file();
 
     std::string get_user_info();
+
+    std::string create_tomato(const std::string &tags);
 };
