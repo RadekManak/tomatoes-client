@@ -7,4 +7,8 @@ Goals of this project are:
 2. Build frontend using QT and console
 3. Learn C++ along the way :)
 
+### Dependencies
+
+Fedora packages: `cpprest-devel zlib-devel openssl-devel boost-devel`
+
 Licensed under MIT License in hope that it will be useful to someone.

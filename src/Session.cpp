@@ -29,7 +29,7 @@ std::string Session::create_tomato(const std::string& tags){
 
 bool Session::load_user_from_file() {
     std::fstream users_file;
-    users_file.open(xdg::config_home() + "/tomatoesqt/users.json", std::ios::in);
+    users_file.open(xdg::config_home() + "/tomatoes-client/users.json", std::ios::in);
     json::value users = json::value::parse(users_file);
     github_token = users["github_token"].as_string();
     api_token = users["api_token"].as_string();
