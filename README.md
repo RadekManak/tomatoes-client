@@ -9,6 +9,6 @@ Goals of this project are:
 
 ### Dependencies
 
-Fedora packages: `cpprest-devel zlib-devel openssl-devel boost-devel`
+Fedora packages: `cpprest-devel zlib-devel openssl-devel boost-devel qt5-qtbase-devel`
 
 Licensed under MIT License in hope that it will be useful to someone.

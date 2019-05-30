@@ -24,7 +24,7 @@ void TimerWidget::start_pomodoro() {
     countdown = 25*60;
     qtimer = new QTimer(this);
     connect(qtimer, SIGNAL(timeout()), this, SLOT(timer_tick()));
-    qtimer->start(5);
+    qtimer->start(1000);
 }
 
 void TimerWidget::timer_tick() {
