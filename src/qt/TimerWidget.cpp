@@ -1,5 +1,6 @@
 #include "TimerWidget.h"
 #include "ui_TimerWidget.h"
+#include <chrono>
 
 TimerWidget::TimerWidget(QWidget *parent) :
     QWidget(parent),
@@ -7,12 +8,13 @@ TimerWidget::TimerWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->resetPomodoroButton, &QPushButton::clicked, this, &TimerWidget::stop_pomodoro);
+    qtimer = std::make_unique<QTimer>();
+    connect(qtimer.get(), SIGNAL(timeout()), this, SLOT(timer_tick()));
 }
 
 TimerWidget::~TimerWidget()
 {
     delete ui;
-    delete qtimer;
 }
 
 void TimerWidget::stop_pomodoro(){
@@ -21,28 +23,28 @@ void TimerWidget::stop_pomodoro(){
 }
 
 void TimerWidget::start_pomodoro() {
-    countdown = 25*60;
-    qtimer = new QTimer(this);
-    connect(qtimer, SIGNAL(timeout()), this, SLOT(timer_tick()));
+    std::chrono::milliseconds duration = std::chrono::minutes{25};
+    end_date = std::chrono::system_clock::now() + duration;
+    timer_tick();
     qtimer->start(1000);
 }
 
 void TimerWidget::timer_tick() {
-    if (countdown == 1){
+    if (end_date <= std::chrono::system_clock::now()){
         qtimer->stop();
         emit timer_finished();
+        return;
     }
-    countdown -= 1;
-    int minutes = countdown/60;
-    int seconds = countdown%60;
-    std::string zero_min;
-    if (minutes < 10){
-        zero_min = "0";
-    }
-    std::string zero_sec;
-    if (seconds < 10){
-        zero_sec = "0";
-    }
-    std::string time = zero_min + std::to_string(minutes) + ":" + zero_sec + std::to_string(seconds);
-    ui->clockLabel->setText(time.c_str());
+    auto time_left = end_date - std::chrono::system_clock::now();
+    ui->clockLabel->setText(format_duration(time_left).c_str());
+}
+
+static std::string format_duration(std::chrono::system_clock::duration duration){
+    using namespace std;
+    chrono::minutes min = chrono::duration_cast<chrono::minutes>(duration);
+    duration = duration-min;
+    chrono::seconds sec = chrono::duration_cast<chrono::seconds>(duration);
+    char out[20];
+    sprintf(out, "%02d:%02d", (int)min.count(), (int)sec.count());
+    return out;
 }

@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QWidget>
+#include <chrono>
 #include <QtCore/QTimer>
+#include <memory>
 
 namespace Ui {
 class TimerWidget;
@@ -9,8 +11,8 @@ class TimerWidget;
 
 class TimerWidget : public QWidget {
 Q_OBJECT
-    int countdown;
-    QTimer *qtimer;
+    std::unique_ptr<QTimer> qtimer;
+    std::chrono::system_clock::time_point end_date;
 
 protected slots:
 
@@ -30,3 +32,5 @@ public slots:
     void stop_pomodoro();
     void start_pomodoro();
 };
+
+static std::string format_duration(std::chrono::system_clock::duration duration);
