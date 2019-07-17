@@ -17,7 +17,7 @@ public:
     ~MainWindow() override;
     void setSession(std::shared_ptr<Session>& session);
 
-public slots:
+private slots:
     void start_pomodoro();
     void finish_pomodoro();
     void cancel_pomodoro();
@@ -25,4 +25,6 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    bool break_time;
+    int finished_tomatoes;
 };

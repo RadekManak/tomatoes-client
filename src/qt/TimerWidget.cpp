@@ -22,8 +22,19 @@ void TimerWidget::stop_pomodoro(){
     emit timer_stopped();
 }
 
-void TimerWidget::start_pomodoro() {
-    std::chrono::milliseconds duration = std::chrono::minutes{25};
+void TimerWidget::start_timer(Timer_type type) {
+    std::chrono::milliseconds duration;
+    switch (type){
+        case Timer_type::pomodoro_timer:
+            duration = std::chrono::minutes{25};
+            break;
+        case Timer_type::break_timer:
+            duration = std::chrono::minutes{5};
+            break;
+        case Timer_type::break_timer_long:
+            duration = std::chrono::minutes{20};
+            break;
+    }
     end_date = std::chrono::system_clock::now() + duration;
     timer_tick();
     qtimer->start(1000);

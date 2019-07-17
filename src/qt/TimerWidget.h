@@ -5,6 +5,12 @@
 #include <QtCore/QTimer>
 #include <memory>
 
+enum class Timer_type{
+    pomodoro_timer,
+    break_timer,
+    break_timer_long
+};
+
 namespace Ui {
 class TimerWidget;
 }
@@ -30,7 +36,7 @@ signals:
 
 public slots:
     void stop_pomodoro();
-    void start_pomodoro();
+    void start_timer(Timer_type type);
 };
 
 static std::string format_duration(std::chrono::system_clock::duration duration);
