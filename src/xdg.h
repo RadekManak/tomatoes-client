@@ -3,5 +3,5 @@
 #include <string>
 
 namespace xdg{
-    std::string config_home();
+    const std::string config_home();
 }
