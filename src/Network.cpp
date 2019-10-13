@@ -90,7 +90,6 @@ http_response Network::authenticated_request(http_request& req) {
         req.headers().add("Authorization", api_token);
         response = client.request(req);
     }
-    std::cout << "Final response was: " << response.get().status_code() << std::endl << "JSON: "
-        << response.get().extract_json().get().serialize();
+    std::cout << "Final response was: " << response.get().status_code() << '\n';
     return response.get();
 }

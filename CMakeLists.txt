@@ -21,7 +21,7 @@ add_executable(${PROJECT_NAME}
         src/qt/TimerWidget.ui
         src/qt/SubmitWidget.cpp
         src/qt/SubmitWidget.ui
-        )
+        src/User_info.cpp src/User_info.h)
 
 ## DEPENDENCIES
 find_package(cpprestsdk REQUIRED)

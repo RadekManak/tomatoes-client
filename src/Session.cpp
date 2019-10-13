@@ -15,11 +15,12 @@ using namespace web;
 Session::Session(){
     load_user_from_file();
     network = std::make_unique<Network>("http://www.tomato.es", github_token, api_token);
+    update_user_info();
 }
 
-std::string Session::get_user_info(){
+void Session::update_user_info(){
     auto response = network->get_current_user_data();
-    return response.serialize();
+    userInfo = User_info{response};
 }
 
 std::string Session::create_tomato(const std::string& tags){
